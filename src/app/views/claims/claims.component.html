@@ -1,1 +1,38 @@
-<p>claims works!</p>
+<div class="container">
+  <nb-card class="inline-form-card" style="border-radius: 15px">
+    <nb-card-header>Filters</nb-card-header>
+    <nb-card-body>
+      <div class="row mb-4">
+        <div class="col-6 text-center">
+          <nb-select selected="All" style="min-width: 50%">
+            <nb-option *ngFor="let item of categories" [value]="item">{{
+              item
+            }}</nb-option>
+          </nb-select>
+        </div>
+        <div class="col-6">
+          <input
+            style="min-width: 50%"
+            nbInput
+            placeholder="Range Picker"
+            [nbDatepicker]="rangepicker"
+          />
+          <nb-rangepicker #rangepicker [min]="min" [max]="max"></nb-rangepicker>
+        </div>
+      </div>
+    </nb-card-body>
+  </nb-card>
+
+  <nb-card>
+    <nb-card-header> Claims </nb-card-header>
+
+    <nb-card-body>
+      <ng2-smart-table
+        [settings]="settings"
+        [source]="source"
+        (deleteConfirm)="onDeleteConfirm($event)"
+      >
+      </ng2-smart-table>
+    </nb-card-body>
+  </nb-card>
+</div>

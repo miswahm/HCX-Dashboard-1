@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ClaimsComponent } from './claims.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ClaimsComponent
+  ],
   imports: [
     CommonModule
   ]

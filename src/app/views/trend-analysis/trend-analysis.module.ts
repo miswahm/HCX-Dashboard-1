@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TrendAnalysisComponent } from './trend-analysis.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    TrendAnalysisComponent
+  ],
   imports: [
     CommonModule
   ]

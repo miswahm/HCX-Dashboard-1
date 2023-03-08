@@ -1,20 +1,22 @@
-import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
-import { NbThemeService } from '@nebular/theme';
-import { takeWhile } from 'rxjs/operators';
-import { LayoutService } from '../../../../@core/utils/layout.service';
+import { AfterViewInit, Component, Input, OnDestroy } from "@angular/core";
+import { NbThemeService } from "@nebular/theme";
+import { takeWhile } from "rxjs/operators";
+import { LayoutService } from "../../../../@core/utils/layout.service";
 
 @Component({
-  selector: 'ngx-stats-bar-animation-chart',
+  selector: "ngx-stats-bar-animation-chart",
   template: `
-    <div echarts
-         [options]="options"
-         class="echart"
-         (chartInit)="onChartInit($event)">
-    </div>
+    <div
+      echarts
+      [options]="options"
+      class="echart"
+      (chartInit)="onChartInit($event)"
+    ></div>
   `,
 })
-export class StatsBarAnimationChartComponent implements AfterViewInit, OnDestroy {
-
+export class StatsBarAnimationChartComponent
+  implements AfterViewInit, OnDestroy
+{
   private alive = true;
 
   @Input() linesData: { firstLine: number[]; secondLine: number[] } = {
@@ -25,23 +27,28 @@ export class StatsBarAnimationChartComponent implements AfterViewInit, OnDestroy
   echartsIntance: any;
   options: any = {};
 
-  constructor(private theme: NbThemeService,
-              private layoutService: LayoutService) {
-    this.layoutService.onSafeChangeLayoutSize()
-      .pipe(
-        takeWhile(() => this.alive),
-      )
+  constructor(
+    private theme: NbThemeService,
+    private layoutService: LayoutService
+  ) {
+    this.layoutService
+      .onSafeChangeLayoutSize()
+      .pipe(takeWhile(() => this.alive))
       .subscribe(() => this.resizeChart());
   }
 
   ngAfterViewInit() {
-    this.theme.getJsTheme()
+    this.theme
+      .getJsTheme()
       .pipe(takeWhile(() => this.alive))
-      .subscribe(config => {
-        const profitBarAnimationEchart: any = config.variables.profitBarAnimationEchart;
+      .subscribe((config) => {
+        const profitBarAnimationEchart: any =
+          config.variables.profitBarAnimationEchart;
 
         this.setChartOption(profitBarAnimationEchart);
-    });
+      });
+
+    console.log(this.linesData);
   }
 
   setChartOption(chartVariables) {
@@ -57,7 +64,7 @@ export class StatsBarAnimationChartComponent implements AfterViewInit, OnDestroy
         bottom: 0,
       },
       legend: {
-        data: ['transactions', 'orders'],
+        data: ["transactions", "orders"],
         borderWidth: 0,
         borderRadius: 0,
         itemWidth: 15,
@@ -68,18 +75,18 @@ export class StatsBarAnimationChartComponent implements AfterViewInit, OnDestroy
       },
       tooltip: {
         axisPointer: {
-          type: 'shadow',
+          type: "shadow",
         },
         textStyle: {
           color: chartVariables.tooltipTextColor,
           fontWeight: chartVariables.tooltipFontWeight,
           fontSize: chartVariables.tooltipFontSize,
         },
-        position: 'top',
+        position: "top",
         backgroundColor: chartVariables.tooltipBg,
         borderColor: chartVariables.tooltipBorderColor,
         borderWidth: chartVariables.tooltipBorderWidth,
-        formatter: params => `$ ${Math.round(parseInt(params.value, 10))}`,
+        formatter: (params) => `$ ${Math.round(parseInt(params.value, 10))}`,
         extraCssText: chartVariables.tooltipExtraCss,
       },
       xAxis: [
@@ -120,20 +127,20 @@ export class StatsBarAnimationChartComponent implements AfterViewInit, OnDestroy
       ],
       series: [
         {
-          name: 'transactions',
-          type: 'bar',
+          name: "transactions",
+          type: "bar",
           data: this.linesData.firstLine,
-          animationDelay: idx => idx * 10,
+          animationDelay: (idx) => idx * 10,
         },
         {
-          name: 'orders',
-          type: 'bar',
+          name: "orders",
+          type: "bar",
           data: this.linesData.secondLine,
-          animationDelay: idx => idx * 10 + 100,
+          animationDelay: (idx) => idx * 10 + 100,
         },
       ],
-      animationEasing: 'elasticOut',
-      animationDelayUpdate: idx => idx * 5,
+      animationEasing: "elasticOut",
+      animationDelayUpdate: (idx) => idx * 5,
     };
   }
 

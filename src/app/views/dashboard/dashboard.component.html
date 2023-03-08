@@ -1,0 +1,54 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-7">
+      <nb-card>
+        <nb-card-header>Claims</nb-card-header>
+        <nb-card-body>
+          <chart
+            style="min-height: 400px"
+            type="line"
+            [data]="data"
+            [options]="options"
+          ></chart>
+        </nb-card-body>
+      </nb-card>
+    </div>
+    <div class="col-5">
+      <div>
+        <nb-card>
+          <nb-card-header>Total number of Providers : <b>20</b></nb-card-header>
+          <nb-card-body style="min-height: 320px">
+            <ngx-charts-line-chart
+              [scheme]="colorScheme"
+              [results]="multi"
+              [xAxis]="showXAxis"
+              [yAxis]="showYAxis"
+              [legend]="showLegend"
+              [showXAxisLabel]="showXAxisLabel"
+              [showYAxisLabel]="showYAxisLabel"
+              [xAxisLabel]="xAxisLabel"
+              [yAxisLabel]="yAxisLabel"
+            >
+            </ngx-charts-line-chart>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <nb-card>
+        <nb-card-header>Trends</nb-card-header>
+        <nb-card-body>
+          <chart
+            style="min-height: 400px"
+            type="line"
+            [data]="dataTrends"
+            [options]="optionsTrends"
+          ></chart>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
+</div>

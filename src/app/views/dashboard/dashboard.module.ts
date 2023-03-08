@@ -9,9 +9,8 @@ import { NgxChartsModule } from "@swimlane/ngx-charts";
 
 //Routes
 const routes: Routes = [
-  { path: "birds-eye-view", component: DashboardComponent },
-  { path: "", redirectTo: "birds-eye-view", pathMatch: "full" },
-  { path: "**", redirectTo: "birds-eye-view" },
+  { path: "", component: DashboardComponent },
+  { path: "**", redirectTo: "" },
 ];
 
 @NgModule({

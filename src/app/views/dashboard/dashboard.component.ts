@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { NbThemeService, NbColorHelper } from "@nebular/theme";
 import { LayoutService } from "../../@core/utils";
-import { delay, takeWhile } from "rxjs/operators";
+
 
 @Component({
   selector: "ngx-dashboard",
@@ -12,7 +12,6 @@ export class DashboardComponent implements OnInit {
   data: any;
   options: any;
   themeSubscription: any;
-  private alive = true;
   chartData: number[];
 
   //Providers Graphs

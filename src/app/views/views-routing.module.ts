@@ -24,9 +24,8 @@ const routes: Routes = [
         loadChildren: () =>
           import("./claims/claims.module").then((m) => m.ClaimsModule),
       },
-      { path: "", redirectTo: "/dashboard", pathMatch: "full" },
-      { path: "*", redirectTo: "/dashboard", pathMatch: "full" },
-      { path: "**", redirectTo: "/dashboard", pathMatch: "full" },
+      { path: "", redirectTo: "dashboard", pathMatch: "full" },
+      { path: "**", redirectTo: "dashboard" },
     ],
   },
 ];

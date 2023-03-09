@@ -50,8 +50,15 @@ export const routes: Routes = [
       },
     ],
   },
-  { path: "", redirectTo: "views", pathMatch: "full" },
-  { path: "**", redirectTo: "views" },
+  {
+    path: "views/dashboard",
+    loadChildren: () =>
+      import("./views/dashboard/dashboard.module").then(
+        (m) => m.DashboardModule
+      ),
+  },
+  { path: "", redirectTo: "views/dashboard", pathMatch: "full" },
+  { path: "**", redirectTo: "views/dashboard" },
 ];
 
 const config: ExtraOptions = {

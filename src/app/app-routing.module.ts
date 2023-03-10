@@ -57,6 +57,13 @@ export const routes: Routes = [
         (m) => m.DashboardModule
       ),
   },
+  {
+    path: "authentication",
+    loadChildren: () =>
+      import("./authentication/authentication.module").then(
+        (m) => m.AuthenticationModule
+      ),
+  },
   { path: "", redirectTo: "views/dashboard", pathMatch: "full" },
   { path: "**", redirectTo: "views/dashboard" },
 ];

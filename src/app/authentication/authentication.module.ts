@@ -5,6 +5,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { AuthenticationComponent } from "./authentication.component";
 import { ThemeModule } from "../@theme/theme.module";
 import { MiscellaneousModule } from "../pages/miscellaneous/miscellaneous.module";
+import { ReactiveFormsModule } from "@angular/forms";
 
 //Routes
 const routes: Routes = [
@@ -26,6 +27,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     ThemeModule,
     MiscellaneousModule,
+    ReactiveFormsModule,
   ],
 })
 export class AuthenticationModule {}

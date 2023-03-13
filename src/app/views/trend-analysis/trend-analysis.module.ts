@@ -6,6 +6,7 @@ import {
   NbCardModule,
   NbDatepickerModule,
   NbInputModule,
+  NbListModule,
   NbSelectModule,
 } from "@nebular/theme";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
@@ -28,6 +29,7 @@ const routes: Routes = [
     ChartModule,
     NbInputModule,
     NgxEchartsModule,
+    NbListModule,
   ],
 })
 export class TrendAnalysisModule {}

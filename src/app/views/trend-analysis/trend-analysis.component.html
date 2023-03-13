@@ -51,20 +51,27 @@
   </div>
 
   <div class="row">
-    <div class="col-7">
+    <div class="col-5">
       <nb-card>
         <nb-card-header>Claim Flow by Hospital</nb-card-header>
         <nb-card-body>
-          <chart
+          <!-- <chart
             style="min-height: 300px"
             type="line"
             [data]="dataTrends"
             [options]="optionsTrends"
-          ></chart>
+          ></chart> -->
+
+          <nb-list>
+            <nb-list-item>
+              <p>Hospital</p>
+              <p class="pull-right">250</p></nb-list-item
+            >
+          </nb-list>
         </nb-card-body>
       </nb-card>
     </div>
-    <div class="col-5">
+    <div class="col-7">
       <nb-card>
         <nb-card-header>Successful to Error Claims</nb-card-header>
         <nb-card-body>

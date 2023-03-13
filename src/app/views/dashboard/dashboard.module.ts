@@ -3,9 +3,19 @@ import { CommonModule } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { DashboardComponent } from "./dashboard.component";
 import { ChartModule } from "angular2-chartjs";
-import { NbCardModule } from "@nebular/theme";
+import {
+  NbCardModule,
+  NbIconModule,
+  NbListModule,
+  NbTabsetModule,
+} from "@nebular/theme";
 import { NgxEchartsModule } from "ngx-echarts";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
+import { ClaimsLiveUpdateChartComponent } from "./claims-live-update-chart.component";
+import { ProvidersChartComponent } from "./provides-chart.component";
+import { ClaimFlowWeekComponent } from "./claim-flow-week/claim-flow-week.component";
+import { ClaimFlowFrontComponent } from "./claim-flow-week/front-card.component";
+import { ClaimFlowBackComponent } from "./claim-flow-week/back-card.component";
 
 //Routes
 const routes: Routes = [
@@ -14,7 +24,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [DashboardComponent],
+  declarations: [
+    DashboardComponent,
+    ClaimsLiveUpdateChartComponent,
+    ProvidersChartComponent,
+    ClaimFlowWeekComponent,
+    ClaimFlowFrontComponent,
+    ClaimFlowBackComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -22,6 +39,9 @@ const routes: Routes = [
     NbCardModule,
     NgxEchartsModule,
     NgxChartsModule,
+    NbIconModule,
+    NbListModule,
+    NbTabsetModule,
   ],
 })
 export class DashboardModule {}

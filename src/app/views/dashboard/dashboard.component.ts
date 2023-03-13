@@ -1,7 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { NbThemeService, NbColorHelper } from "@nebular/theme";
 import { LayoutService } from "../../@core/utils";
-
+import { switchMap, takeWhile } from "rxjs/operators";
+import { EarningData, LiveUpdateChart } from "../../@core/data/earning";
+import { interval } from "rxjs";
+import { TrafficChartData } from "../../@core/data/traffic-chart";
 
 @Component({
   selector: "ngx-dashboard",
@@ -15,140 +18,68 @@ export class DashboardComponent implements OnInit {
   chartData: number[];
 
   //Providers Graphs
-  multi = [
-    {
-      name: "Germany",
-      series: [
-        {
-          name: "17",
-          value: 20,
-        },
-        {
-          name: "18",
-          value: 25,
-        },
-        {
-          name: "19",
-          value: 30,
-        },
-        {
-          name: "20",
-          value: 20,
-        },
-        {
-          name: "21",
-          value: 25,
-        },
-        {
-          name: "22",
-          value: 40,
-        },
-        {
-          name: "23",
-          value: 10,
-        },
-      ],
-    },
-  ];
-  showLegend = false;
-  showXAxis = true;
-  showYAxis = true;
-  showXAxisLabel = true;
-  xAxisLabel = "Days";
-  showYAxisLabel = true;
-  yAxisLabel = "Number of Providers";
-  colorScheme: any;
+  trafficChartPoints: number[];
+  currentTheme: string;
 
   //Trends Graph
   dataTrends: {};
   optionsTrends: any;
   themeSubscriptionTrends: any;
 
+  //Claim Graph
+  earningLiveUpdateCardData: LiveUpdateChart;
+  liveUpdateChartData: { value: [string, number] }[];
+  private alive = true;
+  intervalSubscription: any;
+
   constructor(
     private theme: NbThemeService,
-    private layoutService: LayoutService
+    private earningService: EarningData,
+    private trafficChartService: TrafficChartData
   ) {}
 
   ngOnInit(): void {
-    this.setUpLineMap();
+    this.claimsChart();
     this.setUpProvidersGraph();
     this.setTrendsGraph();
   }
 
   setUpProvidersGraph() {
-    this.themeSubscription = this.theme.getJsTheme().subscribe((config) => {
-      const colors: any = config.variables;
-      this.colorScheme = {
-        domain: [
-          colors.primaryLight,
-          colors.infoLight,
-          colors.successLight,
-          colors.warningLight,
-          colors.dangerLight,
-        ],
-      };
-    });
+    this.trafficChartService
+      .getTrafficChartData()
+      .pipe(takeWhile(() => this.alive))
+      .subscribe((data) => {
+        this.trafficChartPoints = data;
+      });
   }
 
-  setUpLineMap() {
-    this.themeSubscription = this.theme.getJsTheme().subscribe((config) => {
-      const colors: any = config.variables;
-      const chartjs: any = config.variables.chartjs;
+  claimsChart() {
+    this.earningService
+      .getEarningCardData("Bitcoin")
+      .pipe(takeWhile(() => this.alive))
+      .subscribe((earningLiveUpdateCardData: LiveUpdateChart) => {
+        this.earningLiveUpdateCardData = earningLiveUpdateCardData;
+        this.liveUpdateChartData = earningLiveUpdateCardData.liveChart;
 
-      this.data = {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-        ],
-        datasets: [
-          {
-            data: [65, 59, 80, 81, 56, 55, 40],
-            label: "Series A",
-            backgroundColor: NbColorHelper.hexToRgbA(colors.primary, 0.3),
-            borderColor: colors.primary,
-          },
-        ],
-      };
+        this.startReceivingLiveData("Bitcoin");
+      });
+  }
 
-      this.options = {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          xAxes: [
-            {
-              gridLines: {
-                display: true,
-                color: chartjs.axisLineColor,
-              },
-              ticks: {
-                fontColor: chartjs.textColor,
-              },
-            },
-          ],
-          yAxes: [
-            {
-              gridLines: {
-                display: true,
-                color: chartjs.axisLineColor,
-              },
-              ticks: {
-                fontColor: chartjs.textColor,
-              },
-            },
-          ],
-        },
-        legend: {
-          labels: {
-            fontColor: chartjs.textColor,
-          },
-        },
-      };
-    });
+  startReceivingLiveData(currency) {
+    if (this.intervalSubscription) {
+      this.intervalSubscription.unsubscribe();
+    }
+
+    this.intervalSubscription = interval(200)
+      .pipe(
+        takeWhile(() => this.alive),
+        switchMap(() =>
+          this.earningService.getEarningLiveUpdateCardData(currency)
+        )
+      )
+      .subscribe((liveUpdateChartData: any[]) => {
+        this.liveUpdateChartData = [...liveUpdateChartData];
+      });
   }
 
   setTrendsGraph() {
@@ -283,6 +214,8 @@ export class DashboardComponent implements OnInit {
   private random() {
     return Math.round(Math.random() * 100);
   }
+
+  changeTab(e) {}
 
   ngOnDestroy(): void {
     this.themeSubscription.unsubscribe();

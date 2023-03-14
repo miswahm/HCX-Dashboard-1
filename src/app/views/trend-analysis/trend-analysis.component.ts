@@ -321,10 +321,7 @@ export class TrendAnalysisComponent implements OnInit {
       this.apiResponse.graph[1].claimCount
     );
 
-    const keys = this.apiResponse.graph[0].claimCount
-      .map((obj) => Object.keys(obj))
-      .flat()
-      .sort();
+    const keys =   this.apiResponse.graph[0].claimCount.map(obj => Object.keys(obj)).flat().sort();
 
     this.themeSubscriptionS2E = this.theme.getJsTheme().subscribe((config) => {
       const colors: any = config.variables;

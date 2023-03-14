@@ -10,4 +10,7 @@
 
 export const environment = {
   production: false,
+  URL: "https://development.vitrayatech.com/api/v1/hcxpayor/nb",
+  token:
+    "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoY3hQYXlvciIsImlhdCI6MTY3ODc3NDMwNiwiZXhwIjoxNjc4ODYwNzA2fQ.ctYiDQqPWH-GWee_30mjAhaxMZ4BIZ6Mo9-I7VKcv_bmDDZJheOpn-AvbZZzQFO5JADgkUbDixz_j7wv2eXNyQ",
 };

@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { NbColorHelper, NbDateService, NbThemeService } from "@nebular/theme";
+import { TrendsManagementService } from "./trends-management.service";
+import { GraphHelperService } from "./graph-helper.service";
 
 @Component({
   selector: "ngx-trend-analysis",
@@ -33,6 +35,7 @@ export class TrendAnalysisComponent implements OnInit {
   dataS2E: any;
   optionsS2E: any;
   themeSubscriptionS2E: any;
+  apiResponse: any;
 
   //Hospital Claims Flow
   optionsHospital: any = {};
@@ -40,7 +43,9 @@ export class TrendAnalysisComponent implements OnInit {
 
   constructor(
     protected dateService: NbDateService<Date>,
-    private theme: NbThemeService
+    private theme: NbThemeService,
+    private trendsService: TrendsManagementService,
+    private graphHeloper: GraphHelperService
   ) {}
 
   ngOnInit(): void {
@@ -255,22 +260,86 @@ export class TrendAnalysisComponent implements OnInit {
   }
 
   setSuccessfulToErrorGraph() {
+    this.trendsService
+      .fetchSuccessErrorClaims("2023-03-12", "2023-03-15")
+      .subscribe((data) => {
+        console.log(data);
+      });
+
+    this.apiResponse = {
+      totalNoOfClaims: "12",
+      graph: [
+        {
+          category: "Sucess",
+          claimCountByType: 5,
+          claimCount: [
+            {
+              "2023-03-14": 2,
+            },
+            {
+              "2023-03-13": 3,
+            },
+            {
+              "2023-03-12": 0,
+            },
+            {
+              "2023-03-16": 0,
+            },
+            {
+              "2023-03-15": 0,
+            },
+          ],
+        },
+        {
+          category: "Error",
+          claimCountByType: 7,
+          claimCount: [
+            {
+              "2023-03-14": 3,
+            },
+            {
+              "2023-03-13": 4,
+            },
+            {
+              "2023-03-12": 0,
+            },
+            {
+              "2023-03-16": 0,
+            },
+            {
+              "2023-03-15": 0,
+            },
+          ],
+        },
+      ],
+    };
+
+    const successArray = this.graphHeloper.remodelArray(
+      this.apiResponse.graph[0].claimCount
+    );
+    const errorArray = this.graphHeloper.remodelArray(
+      this.apiResponse.graph[1].claimCount
+    );
+
+    const keys = this.apiResponse.graph[0].claimCount
+      .map((obj) => Object.keys(obj))
+      .flat()
+      .sort();
+
     this.themeSubscriptionS2E = this.theme.getJsTheme().subscribe((config) => {
       const colors: any = config.variables;
       const chartjs: any = config.variables.chartjs;
-      console.log(colors);
-      // 00FF00
-      // FF0000
+
       this.dataS2E = {
-        labels: ["03", "04", "05", "06", "07", "08", "09"],
+        labels: keys,
         datasets: [
           {
-            data: [65, 59, 80, 81, 56, 55, 40],
+            data: successArray,
             label: "Success",
             backgroundColor: NbColorHelper.hexToRgbA("#00FF00", 0.8),
           },
           {
-            data: [28, 48, 40, 19, 86, 27, 90],
+            data: errorArray,
             label: "Error",
             backgroundColor: NbColorHelper.hexToRgbA("#FF0000", 0.8),
           },

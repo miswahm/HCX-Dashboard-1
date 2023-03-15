@@ -10,6 +10,7 @@ import {
   NbSelectModule,
 } from "@nebular/theme";
 import { Ng2SmartTableModule } from "ng2-smart-table";
+import { ReactiveFormsModule } from "@angular/forms";
 
 //Routes
 const routes: Routes = [
@@ -29,6 +30,7 @@ const routes: Routes = [
     NbSelectModule,
     NbDatepickerModule,
     Ng2SmartTableModule,
+    ReactiveFormsModule,
   ],
 })
 export class ClaimsModule {}

@@ -4,20 +4,43 @@
     <nb-card-body>
       <div class="row mb-4">
         <div class="col-6 text-center">
-          <nb-select selected="All" style="min-width: 50%">
-            <nb-option *ngFor="let item of categories" [value]="item">{{
-              item
+          <nb-select
+            selected="All"
+            style="min-width: 50%"
+            [formControl]="selectedItemFormControl"
+          >
+            <nb-option *ngFor="let item of categories" [value]="item.value">{{
+              item.view
             }}</nb-option>
           </nb-select>
         </div>
         <div class="col-6">
-          <input
-            style="min-width: 50%"
-            nbInput
-            placeholder="Range Picker"
-            [nbDatepicker]="rangepicker"
-          />
-          <nb-rangepicker #rangepicker [min]="min" [max]="max"></nb-rangepicker>
+          <div class="row">
+            <div class="col-6">
+              <input
+                nbInput
+                placeholder="Pick Date"
+                [nbDatepicker]="selectedStartDate"
+                [formControl]="selectedStartDate"
+              />
+              <nb-datepicker
+                #selectedStartDate
+                (dateChange)="filterDate($event, 'start')"
+              ></nb-datepicker>
+            </div>
+            <div class="col-6">
+              <input
+                nbInput
+                placeholder="Pick Date"
+                [nbDatepicker]="selectedEndDate"
+                [formControl]="selectedEndDate"
+              />
+              <nb-datepicker
+                #selectedEndDate
+                (dateChange)="filterDate($event, 'end')"
+              ></nb-datepicker>
+            </div>
+          </div>
         </div>
       </div>
     </nb-card-body>

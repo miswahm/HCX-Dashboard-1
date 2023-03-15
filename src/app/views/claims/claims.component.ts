@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { NbDateService } from "@nebular/theme";
 import { LocalDataSource } from "ng2-smart-table";
 import { SmartTableData } from "../../@core/data/smart-table";
+import { ClaimsManagementService } from "./claims-management.service";
+import { FormControl } from "@angular/forms";
 
 @Component({
   selector: "ngx-claims",
@@ -12,14 +14,16 @@ export class ClaimsComponent implements OnInit {
   min: Date;
   max: Date;
 
-  categories: String[] = [
-    "All",
-    "Pre Auth Request",
-    "Pre Auth Response",
-    "Enhance Request",
-    "Enhance Response",
-    "Query Request",
-    "Query Response",
+  categories: any[] = [
+    { view: "All", value: "all" },
+    { view: "Pre Auth Request", value: "pre_auth_request" },
+    { view: "Pre Auth Response", value: "pre_auth_response" },
+    { view: "Interim Enhancement Request", value: "interim_enhance_request" },
+    { view: "Interim Enhancement Response", value: "interim_enhance_response" },
+    { view: "Final Enhancement Request", value: "final_enhance_request" },
+    { view: "Final Enhancement Response", value: "final_enhance_response" },
+    { view: "Query Request", value: "query_request" },
+    { view: "Query Response", value: "query_response" },
   ];
 
   settings = {
@@ -44,46 +48,62 @@ export class ClaimsComponent implements OnInit {
       position: "right",
     },
     columns: {
-      id: {
+      claimId: {
         title: "ID",
         type: "number",
       },
-      firstName: {
-        title: "First Name",
+      requestType: {
+        title: "Type",
         type: "string",
       },
-      lastName: {
-        title: "Last Name",
+      errors: {
+        title: "Errors",
         type: "string",
       },
-      username: {
-        title: "Username",
+      providerCode: {
+        title: "Provider Id",
         type: "string",
       },
-      email: {
-        title: "E-mail",
+      createdDate: {
+        title: "Created Date",
         type: "string",
-      },
-      age: {
-        title: "Age",
-        type: "number",
       },
     },
   };
 
   source: LocalDataSource = new LocalDataSource();
 
+  selectedItemFormControl = new FormControl("all");
+
+  selectedStartDate = new FormControl();
+  selectedEndDate = new FormControl();
+
+  private startDate;
+  private endDate;
+  private selectedCategory;
+
   constructor(
     protected dateService: NbDateService<Date>,
-    private service: SmartTableData
+    private service: SmartTableData,
+    private claimService: ClaimsManagementService
   ) {}
 
   ngOnInit(): void {
     this.min = this.dateService.addDay(this.dateService.today(), -5);
     this.max = this.dateService.addDay(this.dateService.today(), 5);
 
-    const data = this.service.getData();
-    this.source.load(data);
+    let currentDate = new Date();
+
+    this.endDate = currentDate.toJSON().split("T")[0];
+
+    const sevenDaysAgo = new Date(currentDate); // create a new date object with the current date
+    sevenDaysAgo.setDate(currentDate.getDate() - 7);
+
+    this.startDate = sevenDaysAgo.toJSON().split("T")[0];
+
+    this.fetchTableData(this.startDate, this.endDate, "all");
+
+    this.filterCategory();
   }
 
   onDeleteConfirm(event): void {
@@ -91,6 +111,44 @@ export class ClaimsComponent implements OnInit {
       event.confirm.resolve();
     } else {
       event.confirm.reject();
+    }
+  }
+
+  fetchTableData(startDate: string, endDate: string, category: string) {
+    this.claimService
+      .fetchTable(startDate, endDate, category, "all")
+      .subscribe((data: any) => {
+        //Extract the claimsDetails from each type
+        const claimDetailsArray = data.reduce((acc, item) => {
+          return acc.concat(item.claimDetails);
+        }, []);
+
+        this.source.load(claimDetailsArray);
+      });
+  }
+
+  filterCategory() {
+    this.selectedItemFormControl.valueChanges.subscribe((data) => {
+      this.selectedCategory = data;
+      this.fetchTableData(this.startDate, this.endDate, data);
+    });
+  }
+
+  filterDate(e, type) {
+    console.log(e);
+
+    if (type == "start") {
+      this.selectedStartDate.setValue(e.toJSON().split("T")[0]);
+    } else {
+      this.selectedEndDate.setValue(e.toJSON().split("T")[0]);
+    }
+
+    if (this.selectedStartDate.value && this.selectedEndDate.value) {
+      this.fetchTableData(
+        this.selectedStartDate.value,
+        this.selectedEndDate.value,
+        this.selectedCategory != undefined ? this.selectedCategory : "all"
+      );
     }
   }
 }

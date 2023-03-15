@@ -16,7 +16,8 @@ import { ProvidersChartComponent } from "./provides-chart.component";
 import { ClaimFlowWeekComponent } from "./claim-flow-week/claim-flow-week.component";
 import { ClaimFlowFrontComponent } from "./claim-flow-week/front-card.component";
 import { ClaimFlowBackComponent } from "./claim-flow-week/back-card.component";
-
+import { TrendsGraphComponent } from "./trends-graph/trends-graph.component";
+import { NbGraphComponent } from "./trends-graph/graph.component";
 //Routes
 const routes: Routes = [
   { path: "", component: DashboardComponent },
@@ -31,6 +32,8 @@ const routes: Routes = [
     ClaimFlowWeekComponent,
     ClaimFlowFrontComponent,
     ClaimFlowBackComponent,
+    TrendsGraphComponent,
+    NbGraphComponent,
   ],
   imports: [
     CommonModule,

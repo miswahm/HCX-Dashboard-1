@@ -12,5 +12,5 @@ export const environment = {
   production: false,
   URL: "https://development.vitrayatech.com/api/v1/hcxpayor/nb",
   token:
-    "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoY3hQYXlvciIsImlhdCI6MTY3ODc3NDMwNiwiZXhwIjoxNjc4ODYwNzA2fQ.ctYiDQqPWH-GWee_30mjAhaxMZ4BIZ6Mo9-I7VKcv_bmDDZJheOpn-AvbZZzQFO5JADgkUbDixz_j7wv2eXNyQ",
+    "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoY3hQYXlvciIsImlhdCI6MTY3ODg2MTc4OCwiZXhwIjoxNjc4OTQ4MTg4fQ.l2SQtk1_93-aSe0Keq_cP6OXMc9MpMRWo09cLaNI2rCk73Iw2Nwu_6ahc2-A1AsdStObdtDm5lOoafufyj7Ycg",
 };

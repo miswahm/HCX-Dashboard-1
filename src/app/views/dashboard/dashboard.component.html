@@ -40,29 +40,7 @@
 
   <div class="row">
     <div class="col-12">
-      <nb-card size="large">
-        <nb-tabset fullWidth (changeTab)="changeTab($event)">
-          <nb-tab tabTitle="All">
-            <div class="chart-container">
-              <chart
-                style="min-height: 400px"
-                type="line"
-                [data]="dataTrends"
-                [options]="optionsTrends"
-              ></chart>
-            </div>
-          </nb-tab>
-          <nb-tab tabTitle="Pre Auth" [lazyLoad]="true">
-            <div class="chart-container">hello</div>
-          </nb-tab>
-          <nb-tab tabTitle="Enhance" [lazyLoad]="true">
-            <div class="chart-container">hello</div>
-          </nb-tab>
-          <nb-tab tabTitle="Query" [lazyLoad]="true">
-            <div class="chart-container">hello</div>
-          </nb-tab>
-        </nb-tabset>
-      </nb-card>
+      <ngx-trends-graph></ngx-trends-graph>
     </div>
   </div>
 </div>

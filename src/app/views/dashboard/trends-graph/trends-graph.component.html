@@ -1,0 +1,24 @@
+<nb-card>
+  <nb-tabset fullWidth (changeTab)="changeTab($event)">
+    <nb-tab tabTitle="All">
+      <div class="chart-container">
+        <nb-trend-graph [dataTrends]="templateAll"></nb-trend-graph>
+      </div>
+    </nb-tab>
+    <nb-tab tabTitle="Pre Auth" [lazyLoad]="true">
+      <div class="chart-container">
+        <nb-trend-graph [dataTrends]="templatePre"></nb-trend-graph>
+      </div>
+    </nb-tab>
+    <nb-tab tabTitle="Enhance" [lazyLoad]="true">
+      <div class="chart-container">
+        <nb-trend-graph [dataTrends]="templateEnhance"></nb-trend-graph>
+      </div>
+    </nb-tab>
+    <nb-tab tabTitle="Query" [lazyLoad]="true">
+      <div class="chart-container">
+        <nb-trend-graph [dataTrends]="templateQuery"></nb-trend-graph>
+      </div>
+    </nb-tab>
+  </nb-tabset>
+</nb-card>

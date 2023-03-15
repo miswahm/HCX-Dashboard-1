@@ -60,8 +60,6 @@ export class ClaimsLiveUpdateChartComponent
 
         this.setChartOption(earningLineTheme);
       });
-
-    console.log(this.liveUpdateChartData);
   }
 
   setChartOption(earningLineTheme) {

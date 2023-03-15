@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "../../../environments/environment";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -16,10 +17,18 @@ export class DashboardManagementService {
     };
   }
 
-  fetchTrendGraphData(startDate: string, endDate: string) {
+  fetchTrendGraphData(startDate: string, endDate: string): Observable<any> {
     return this.http.get(
       environment.URL +
         `/dashboard/total?startDate=${startDate}&endDate=${endDate}&category=all`,
+      this.httpOptions
+    );
+  }
+
+  fetchSuccessErrorClaims(startDate: string, endDate: string): Observable<any> {
+    return this.http.get(
+      environment.URL +
+        `/dashboard/trendanalysis/details?startDate=${startDate}&endDate=${endDate}`,
       this.httpOptions
     );
   }

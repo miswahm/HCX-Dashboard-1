@@ -22,9 +22,9 @@ export class ClaimFlowBackComponent implements AfterViewInit, OnChanges {
 
   currentTheme: string;
 
-  data: number[];
-  labels: string[];
-  formatter: string;
+  @Input() data: number[];
+  @Input() labels: string[];
+  @Input() formatter: string;
 
   option: any = {};
   echartsInstance: any;
@@ -61,9 +61,9 @@ export class ClaimFlowBackComponent implements AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit() {
-    this.data = this.trafficBarData.data;
-    this.labels = this.trafficBarData.labels;
-    this.formatter = this.trafficBarData.formatter;
+    // this.data = this.trafficBarData.data;
+    // this.labels = this.trafficBarData.labels;
+    // this.formatter = this.trafficBarData.formatter;
 
     this.themeService
       .getJsTheme()

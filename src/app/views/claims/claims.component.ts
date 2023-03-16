@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { NbDateService } from "@nebular/theme";
+import { NbDateService, NbDialogService } from "@nebular/theme";
 import { LocalDataSource } from "ng2-smart-table";
 import { SmartTableData } from "../../@core/data/smart-table";
 import { ClaimsManagementService } from "./claims-management.service";
@@ -46,6 +46,12 @@ export class ClaimsComponent implements OnInit {
       add: false,
       edit: false,
       position: "right",
+      custom: [
+        {
+          name: "yourAction",
+          title: '<i class="ion-document" title="YourAction"></i>',
+        },
+      ],
     },
     columns: {
       claimId: {
@@ -56,12 +62,16 @@ export class ClaimsComponent implements OnInit {
         title: "Type",
         type: "string",
       },
-      errors: {
-        title: "Errors",
-        type: "string",
-      },
       providerCode: {
         title: "Provider Id",
+        type: "string",
+      },
+      hospitalName: {
+        title: "Provider Name",
+        type: "string",
+      },
+      status: {
+        title: "Status",
         type: "string",
       },
       createdDate: {
@@ -85,7 +95,8 @@ export class ClaimsComponent implements OnInit {
   constructor(
     protected dateService: NbDateService<Date>,
     private service: SmartTableData,
-    private claimService: ClaimsManagementService
+    private claimService: ClaimsManagementService,
+    private dialogService: NbDialogService
   ) {}
 
   ngOnInit(): void {
@@ -114,15 +125,22 @@ export class ClaimsComponent implements OnInit {
     }
   }
 
+  view(e) {
+    let key = Object.keys(e.data.errors);
+
+    alert(`${key} = ${e.data.errors[`${key}`]}`);
+  }
+
   fetchTableData(startDate: string, endDate: string, category: string) {
     this.claimService
       .fetchTable(startDate, endDate, category, "all")
       .subscribe((data: any) => {
         //Extract the claimsDetails from each type
-        const claimDetailsArray = data.reduce((acc, item) => {
-          return acc.concat(item.claimDetails);
-        }, []);
+        const claimDetailsArray = data
+          .map((item) => item.claimDetails)
+          .reduce((acc, val) => acc.concat(val), []);
 
+        console.log(claimDetailsArray);
         this.source.load(claimDetailsArray);
       });
   }

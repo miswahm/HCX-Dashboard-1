@@ -1,11 +1,13 @@
 import { RouterModule, Routes } from "@angular/router";
 import { ViewsComponent } from "./views.component";
 import { NgModule } from "@angular/core";
+import { AuthGuard } from "../authentication/guards/auth.guard";
 
 const routes: Routes = [
   {
     path: "",
     component: ViewsComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: "dashboard",

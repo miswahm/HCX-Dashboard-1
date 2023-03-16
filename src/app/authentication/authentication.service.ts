@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { map } from "leaflet";
 import { BehaviorSubject, Observable } from "rxjs";
 import { User } from "../@core/data/users";
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -22,7 +23,7 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
-  login(username: string, password: string): any {
+  login(body): any {
     // post to fake back end, this url will be handled there...
     // store user details and basic auth credentials in local storage to keep user logged in between page refreshes
     // return this.http
@@ -35,11 +36,13 @@ export class AuthenticationService {
     //       return user;
     //     })
     //   );
+
+    return this.http.post(environment.URL + `/payor/user/login`, body);
   }
 
   logout() {
     // remove user from local storage to log user out
-    localStorage.removeItem("currentUser");
+    localStorage.removeItem("token");
     this.currentUserSubject.next(null);
   }
 }

@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      username: ["", Validators.required],
+      userName: ["", Validators.required],
       password: ["", Validators.required],
     });
 
@@ -52,17 +52,15 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService
-      .login(this.f.username.value, this.f.password.value)
-      .pipe(first())
-      .subscribe(
-        (data) => {
-          this.router.navigate([this.returnUrl]);
-        },
-        (error) => {
-          this.error = error;
-          this.loading = false;
-        }
-      );
+    this.authenticationService.login(this.loginForm.value).subscribe(
+      (data) => {
+        localStorage.setItem("token", data.token.toString());
+        this.router.navigate([this.returnUrl]);
+      },
+      (error) => {
+        this.error = error;
+        this.loading = false;
+      }
+    );
   }
 }

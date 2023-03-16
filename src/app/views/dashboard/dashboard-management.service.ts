@@ -9,10 +9,11 @@ import { Observable } from "rxjs";
 export class DashboardManagementService {
   private httpOptions: any;
   constructor(private http: HttpClient) {
+    let token = localStorage.getItem("token");
     //setting http headers for get requests
     this.httpOptions = {
       headers: new HttpHeaders({
-        Authorization: environment.token,
+        Authorization: token,
       }),
     };
   }

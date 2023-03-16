@@ -8,10 +8,11 @@ import { environment } from "../../../environments/environment";
 export class ClaimsManagementService {
   private httpOptions: any;
   constructor(private http: HttpClient) {
+    let token = localStorage.getItem("token");
     //setting http headers for get requests
     this.httpOptions = {
       headers: new HttpHeaders({
-        Authorization: environment.token,
+        Authorization: token,
       }),
     };
   }

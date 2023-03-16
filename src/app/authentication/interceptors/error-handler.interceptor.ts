@@ -117,6 +117,12 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
           //   "Close"
           // );
         }
+
+        this.toastrService.show(
+          "",
+          "Server Currently Down! Please try again after few minutes.",
+          this.toastrConfig
+        );
     }
 
     return throwError(() => errorResponse);

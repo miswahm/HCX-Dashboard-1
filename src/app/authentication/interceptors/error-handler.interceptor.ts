@@ -8,13 +8,23 @@ import {
 import { Observable, TimeoutError, throwError } from "rxjs";
 import { Router } from "@angular/router";
 import { catchError, finalize, map, timeout } from "rxjs/operators";
+import { NbGlobalPhysicalPosition, NbToastrService } from "@nebular/theme";
 
 //Time on 10 mins
 const APP_XHR_TIMEOUT = 100000;
 
 @Injectable()
 export class ErrorHandlerInterceptor implements HttpInterceptor {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private toastrService: NbToastrService) {}
+
+  private toastrConfig = {
+    status: "danger",
+    destroyByClick: true,
+    duration: 2000,
+    hasIcon: true,
+    position: NbGlobalPhysicalPosition.TOP_RIGHT,
+    preventDuplicates: true,
+  };
 
   intercept(
     request: HttpRequest<unknown>,
@@ -56,30 +66,47 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
 
     switch (errorResponse.status) {
       case 401: // Unauthorized
-        // this._snackBar.open("Session Expired! Please Login again.", "Close");
+        this.toastrService.show(
+          "Session Expired! Please Login again.",
+          this.toastrConfig
+        );
         localStorage.removeItem("token");
         this.router.navigate(["/authentication/login"], {
           queryParams: { returnUrl: this.router.routerState.snapshot.url },
         });
         break;
       case 403: // Unauthorized
-        // this._snackBar.open("Session Expired! Please Login again.", "Close");
+        this.toastrService.show(
+          "",
+          "Session Expired! Please Login again.",
+          this.toastrConfig
+        );
         localStorage.removeItem("token");
         this.router.navigate(["/authentication/login"], {
           queryParams: { returnUrl: this.router.routerState.snapshot.url },
         });
         break;
       case 503: // Service Unavailable
-        // this._snackBar.open(
-        //   "Services are currently down. Please try again in some time.",
-        //   "Close"
-        // );
+        this.toastrService.show(
+          "",
+          "Services are currently down. Please try again in some time.",
+          this.toastrConfig
+        );
+
         break;
       case 500: // Internal Server Error
-        // this._snackBar.open("Some error happened! Please try again.", "Close");
+        this.toastrService.show(
+          "",
+          "Some error happened! Please try again.",
+          this.toastrConfig
+        );
         break;
       case 504: //timeout Error
-        // this._snackBar.open("Process timeout! Please try again.", "Close");
+        this.toastrService.show(
+          "",
+          "Process timeout! Please try again.",
+          this.toastrConfig
+        );
         break;
       default: // Other Error
         if (errorResponse.error.message) {

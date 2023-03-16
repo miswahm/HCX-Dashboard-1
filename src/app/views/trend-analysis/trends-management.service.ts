@@ -37,4 +37,12 @@ export class TrendsManagementService {
       this.httpOptions
     );
   }
+
+  fetchProviders(startDate: string, endDate: string) {
+    return this.http.get(
+      environment.URL +
+        `/dashboard/trendanalysis/hospital?startDate=${startDate}&endDate=${endDate}`,
+      this.httpOptions
+    );
+  }
 }

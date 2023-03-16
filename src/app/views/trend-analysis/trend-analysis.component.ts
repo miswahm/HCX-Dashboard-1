@@ -41,131 +41,94 @@ export class TrendAnalysisComponent implements OnInit {
     this.min = this.dateService.addDay(this.dateService.today(), -5);
     this.max = this.dateService.addDay(this.dateService.today(), 5);
 
+    let currentDate = new Date();
+
+    this.endDate = currentDate.toJSON().split("T")[0];
+
+    const sevenDaysAgo = new Date(currentDate); // create a new date object with the current date
+    sevenDaysAgo.setDate(currentDate.getDate() - 7);
+
+    this.startDate = sevenDaysAgo.toJSON().split("T")[0];
+
     this.setSuccessfulToErrorGraph();
     this.setHospitalGraph();
   }
 
   setSuccessfulToErrorGraph() {
     this.trendsService
-      .fetchSuccessErrorClaims("2023-03-12", "2023-03-15")
+      .fetchSuccessErrorClaims(this.startDate, this.endDate)
       .subscribe((data) => {
-        console.log(data);
+        this.apiResponse = data;
+
+        const successArray = this.graphHeloper.remodelArray(
+          this.apiResponse.graph[0].claimCount
+        );
+        const errorArray = this.graphHeloper.remodelArray(
+          this.apiResponse.graph[1].claimCount
+        );
+
+        const keys = this.apiResponse.graph[0].claimCount
+          .map((obj) => Object.keys(obj))
+          .flat()
+          .sort();
+
+        this.themeSubscriptionS2E = this.theme
+          .getJsTheme()
+          .subscribe((config) => {
+            const colors: any = config.variables;
+            const chartjs: any = config.variables.chartjs;
+
+            this.dataS2E = {
+              labels: keys,
+              datasets: [
+                {
+                  data: successArray,
+                  label: "Success",
+                  backgroundColor: NbColorHelper.hexToRgbA("#00FF00", 0.8),
+                },
+                {
+                  data: errorArray,
+                  label: "Error",
+                  backgroundColor: NbColorHelper.hexToRgbA("#FF0000", 0.8),
+                },
+              ],
+            };
+
+            this.optionsS2E = {
+              maintainAspectRatio: false,
+              responsive: true,
+              legend: {
+                labels: {
+                  fontColor: chartjs.textColor,
+                },
+              },
+              scales: {
+                xAxes: [
+                  {
+                    gridLines: {
+                      display: false,
+                      color: chartjs.axisLineColor,
+                    },
+                    ticks: {
+                      fontColor: chartjs.textColor,
+                    },
+                  },
+                ],
+                yAxes: [
+                  {
+                    gridLines: {
+                      display: true,
+                      color: chartjs.axisLineColor,
+                    },
+                    ticks: {
+                      fontColor: chartjs.textColor,
+                    },
+                  },
+                ],
+              },
+            };
+          });
       });
-
-    this.apiResponse = {
-      totalNoOfClaims: "12",
-      graph: [
-        {
-          category: "Sucess",
-          claimCountByType: 5,
-          claimCount: [
-            {
-              "2023-03-14": 2,
-            },
-            {
-              "2023-03-13": 3,
-            },
-            {
-              "2023-03-12": 0,
-            },
-            {
-              "2023-03-16": 0,
-            },
-            {
-              "2023-03-15": 0,
-            },
-          ],
-        },
-        {
-          category: "Error",
-          claimCountByType: 7,
-          claimCount: [
-            {
-              "2023-03-14": 3,
-            },
-            {
-              "2023-03-13": 4,
-            },
-            {
-              "2023-03-12": 0,
-            },
-            {
-              "2023-03-16": 0,
-            },
-            {
-              "2023-03-15": 0,
-            },
-          ],
-        },
-      ],
-    };
-
-    const successArray = this.graphHeloper.remodelArray(
-      this.apiResponse.graph[0].claimCount
-    );
-    const errorArray = this.graphHeloper.remodelArray(
-      this.apiResponse.graph[1].claimCount
-    );
-
-    const keys = this.apiResponse.graph[0].claimCount
-      .map((obj) => Object.keys(obj))
-      .flat()
-      .sort();
-
-    this.themeSubscriptionS2E = this.theme.getJsTheme().subscribe((config) => {
-      const colors: any = config.variables;
-      const chartjs: any = config.variables.chartjs;
-
-      this.dataS2E = {
-        labels: keys,
-        datasets: [
-          {
-            data: successArray,
-            label: "Success",
-            backgroundColor: NbColorHelper.hexToRgbA("#00FF00", 0.8),
-          },
-          {
-            data: errorArray,
-            label: "Error",
-            backgroundColor: NbColorHelper.hexToRgbA("#FF0000", 0.8),
-          },
-        ],
-      };
-
-      this.optionsS2E = {
-        maintainAspectRatio: false,
-        responsive: true,
-        legend: {
-          labels: {
-            fontColor: chartjs.textColor,
-          },
-        },
-        scales: {
-          xAxes: [
-            {
-              gridLines: {
-                display: false,
-                color: chartjs.axisLineColor,
-              },
-              ticks: {
-                fontColor: chartjs.textColor,
-              },
-            },
-          ],
-          yAxes: [
-            {
-              gridLines: {
-                display: true,
-                color: chartjs.axisLineColor,
-              },
-              ticks: {
-                fontColor: chartjs.textColor,
-              },
-            },
-          ],
-        },
-      };
-    });
   }
 
   setHospitalGraph() {

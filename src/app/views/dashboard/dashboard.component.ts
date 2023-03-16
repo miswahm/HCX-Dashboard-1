@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit {
   getTotalClaims() {
     let today = new Date();
     this.dashboardService
-      .fetchTrendGraphData("2020-01-05", today.toJSON().split("T")[0])
+      .fetchTrendGraphData("2023-01-01", today.toJSON().split("T")[0])
       .subscribe((data) => {
         this.claimCount = data.totalNoOfClaims;
       });
@@ -49,7 +49,7 @@ export class DashboardComponent implements OnInit {
   getTotalProviders() {
     let today = new Date();
     this.dashboardService
-      .fetchProviders("2020-01-05", today.toJSON().split("T")[0])
+      .fetchProviders("2023-01-01", today.toJSON().split("T")[0])
       .subscribe((data: any) => {
         this.providerCount = data.claimFlows.length;
       });

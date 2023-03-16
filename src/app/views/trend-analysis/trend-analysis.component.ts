@@ -244,10 +244,4 @@ export class TrendAnalysisComponent implements OnInit {
   private random() {
     return Math.round(Math.random() * 100);
   }
-
-  ngOnDestroy(): void {
-    this.themeSubscriptionTrends.unsubscribe();
-    this.themeSubscriptionClaims.unsubscribe();
-    this.themeSubscriptionS2E.unsubscribe();
-  }
 }

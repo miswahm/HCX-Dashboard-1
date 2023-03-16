@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="col-8">
+    <nb-card>
+      <nb-card-body>
+        <div class="row">
+          <div class="col-md-4 text-center">
+            <nb-select
+              selected="all"
+              style="min-width: 100%"
+              (selectedChange)="filterCategory($event)"
+            >
+              <nb-option *ngFor="let item of categories" [value]="item.value">{{
+                item.view
+              }}</nb-option>
+            </nb-select>
+          </div>
+          <div class="col-md-8 text-center">
+            <div class="row">
+              <div class="col-6">
+                <input
+                  nbInput
+                  placeholder="Pick Date"
+                  [nbDatepicker]="selectedStartDate"
+                  [formControl]="selectedStartDate"
+                />
+                <nb-datepicker
+                  #selectedStartDate
+                  (dateChange)="filterDate($event, 'start')"
+                ></nb-datepicker>
+              </div>
+              <div class="col-6">
+                <input
+                  nbInput
+                  placeholder="Pick Date"
+                  [nbDatepicker]="selectedEndDate"
+                  [formControl]="selectedEndDate"
+                />
+                <nb-datepicker
+                  #selectedEndDate
+                  (dateChange)="filterDate($event, 'end')"
+                ></nb-datepicker>
+              </div>
+            </div>
+          </div>
+        </div>
+        <chart
+          style="min-height: 400px"
+          type="line"
+          [data]="templateAll"
+          [options]="optionsTrends"
+        ></chart>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-4">
+    <nb-card>
+      <nb-card-body>
+        <p class="header-p">
+          Total Number of Claims Between
+          <b>{{ startDate | date }} and {{ endDate | date }}</b>
+          For type <b>{{ selectedCategory }}</b> is <b>{{ totalClaims }}</b>
+        </p>
+
+        <div echarts [options]="optionsClaims" class="echart"></div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

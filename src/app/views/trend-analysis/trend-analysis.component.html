@@ -1,53 +1,6 @@
 <div class="container">
   <div class="row">
-    <div class="col-8">
-      <nb-card>
-        <nb-card-body>
-          <div class="row mb-3">
-            <div class="col-md-6 text-center">
-              <nb-select selected="All" style="min-width: 50%">
-                <nb-option *ngFor="let item of categories" [value]="item">{{
-                  item
-                }}</nb-option>
-              </nb-select>
-            </div>
-            <div class="col-md-6 text-center">
-              <input
-                style="min-width: 50%"
-                nbInput
-                placeholder="Range Picker"
-                [nbDatepicker]="rangepicker"
-              />
-              <nb-rangepicker
-                #rangepicker
-                [min]="min"
-                [max]="max"
-              ></nb-rangepicker>
-            </div>
-          </div>
-
-          <chart
-            style="min-height: 400px"
-            type="line"
-            [data]="dataTrends"
-            [options]="optionsTrends"
-          ></chart>
-        </nb-card-body>
-      </nb-card>
-    </div>
-
-    <div class="col-4">
-      <nb-card>
-        <nb-card-body>
-          <p class="header-p">
-            Total Number of Claims Between <b>03-05-2022 and 06-05-2022</b> For
-            type <b>All</b> is <b>200</b>
-          </p>
-
-          <div echarts [options]="optionsClaims" class="echart"></div>
-        </nb-card-body>
-      </nb-card>
-    </div>
+    <ngx-overall-graph></ngx-overall-graph>
   </div>
 
   <div class="row">

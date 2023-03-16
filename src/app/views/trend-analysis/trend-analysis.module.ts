@@ -12,6 +12,8 @@ import {
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { NgxEchartsModule } from "ngx-echarts";
 import { ChartModule } from "angular2-chartjs";
+import { OverallGraphComponent } from "./overall-graph/overall-graph.component";
+import { ReactiveFormsModule } from "@angular/forms";
 
 //Routes
 const routes: Routes = [
@@ -19,7 +21,7 @@ const routes: Routes = [
   { path: "**", redirectTo: "", pathMatch: "full" },
 ];
 @NgModule({
-  declarations: [TrendAnalysisComponent],
+  declarations: [TrendAnalysisComponent, OverallGraphComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -30,6 +32,7 @@ const routes: Routes = [
     NbInputModule,
     NgxEchartsModule,
     NbListModule,
+    ReactiveFormsModule,
   ],
 })
 export class TrendAnalysisModule {}

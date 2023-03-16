@@ -25,4 +25,16 @@ export class TrendsManagementService {
       this.httpOptions
     );
   }
+
+  fetchTrendGraphData(
+    startDate: string,
+    endDate: string,
+    category: string
+  ): Observable<any> {
+    return this.http.get(
+      environment.URL +
+        `/dashboard/total?startDate=${startDate}&endDate=${endDate}&category=${category}`,
+      this.httpOptions
+    );
+  }
 }

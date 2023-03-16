@@ -7,7 +7,11 @@ import { DashboardManagementService } from "../dashboard-management.service";
 @Component({
   selector: "ngx-claim-flow-week",
   styleUrls: ["../dashboard.component.scss"],
-  template: `<nb-reveal-card [showToggleButton]="false" [revealed]="revealed">
+  template: `<nb-reveal-card
+    [showToggleButton]="false"
+    [revealed]="revealed"
+    *ngIf="temp"
+  >
     <nb-card-front>
       <nb-card size="small">
         <nb-claim-flow-front [frontCardData]="trafficListData">

@@ -3,13 +3,15 @@
     <div class="col-4">
       <nb-card>
         <nb-card-header
-          ><h4>Total number of Claims: <span>20</span></h4></nb-card-header
+          ><h4>
+            Total number of Claims: <span>{{ claimCount }}</span>
+          </h4></nb-card-header
         >
         <nb-card-body>
-          <ngx-claims-live-update-chart
+          <!-- <ngx-claims-live-update-chart
             [liveUpdateChartData]="liveUpdateChartData"
           >
-          </ngx-claims-live-update-chart>
+          </ngx-claims-live-update-chart> -->
         </nb-card-body>
       </nb-card>
     </div>
@@ -27,11 +29,13 @@
       <div>
         <nb-card>
           <nb-card-header>
-            <h4>Total number of Providers : <b>20</b></h4></nb-card-header
+            <h4>
+              Total number of Providers : <b>{{ providerCount }}</b>
+            </h4></nb-card-header
           >
-          <nb-card-body
-            ><ngx-providers-chart [points]="trafficChartPoints">
-            </ngx-providers-chart>
+          <nb-card-body>
+            <!-- <ngx-providers-chart [points]="trafficChartPoints">
+            </ngx-providers-chart> -->
           </nb-card-body>
         </nb-card>
       </div>

@@ -3,6 +3,8 @@ import { switchMap, takeWhile } from "rxjs/operators";
 import { EarningData, LiveUpdateChart } from "../../@core/data/earning";
 import { interval } from "rxjs";
 import { TrafficChartData } from "../../@core/data/traffic-chart";
+import { DashboardManagementService } from "./dashboard-management.service";
+import { setInterval } from "timers";
 
 @Component({
   selector: "ngx-dashboard",
@@ -25,53 +27,31 @@ export class DashboardComponent implements OnInit {
   private alive = true;
   intervalSubscription: any;
 
-  constructor(
-    private earningService: EarningData,
-    private trafficChartService: TrafficChartData
-  ) {}
+  claimCount: number = 0;
+  providerCount: number = 0;
+
+  constructor(private dashboardService: DashboardManagementService) {}
 
   ngOnInit(): void {
-    this.claimsChart();
-    this.setUpProvidersGraph();
+    this.getTotalClaims();
+    this.getTotalProviders();
   }
 
-  setUpProvidersGraph() {
-    this.trafficChartService
-      .getTrafficChartData()
-      .pipe(takeWhile(() => this.alive))
+  getTotalClaims() {
+    let today = new Date();
+    this.dashboardService
+      .fetchTrendGraphData("2020-01-05", today.toJSON().split("T")[0])
       .subscribe((data) => {
-        this.trafficChartPoints = data;
+        this.claimCount = data.totalNoOfClaims;
       });
   }
 
-  claimsChart() {
-    this.earningService
-      .getEarningCardData("Bitcoin")
-      .pipe(takeWhile(() => this.alive))
-      .subscribe((earningLiveUpdateCardData: LiveUpdateChart) => {
-        this.earningLiveUpdateCardData = earningLiveUpdateCardData;
-        this.liveUpdateChartData = earningLiveUpdateCardData.liveChart;
-
-        this.startReceivingLiveData("Bitcoin");
+  getTotalProviders() {
+    let today = new Date();
+    this.dashboardService
+      .fetchProviders("2020-01-05", today.toJSON().split("T")[0])
+      .subscribe((data: any) => {
+        this.providerCount = data.claimFlows.length;
       });
   }
-
-  startReceivingLiveData(currency) {
-    if (this.intervalSubscription) {
-      this.intervalSubscription.unsubscribe();
-    }
-
-    this.intervalSubscription = interval(200)
-      .pipe(
-        takeWhile(() => this.alive),
-        switchMap(() =>
-          this.earningService.getEarningLiveUpdateCardData(currency)
-        )
-      )
-      .subscribe((liveUpdateChartData: any[]) => {
-        this.liveUpdateChartData = [...liveUpdateChartData];
-      });
-  }
-
-  changeTab(e) {}
 }

@@ -1,10 +1,10 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-4">
+    <div class="col-4" style="margin-top: 50px;">
       <nb-card>
         <nb-card-header
           ><h4>
-            Total number of Claims: <span>{{ claimCount }}</span>
+            Total number of Claims: 
           </h4></nb-card-header
         >
         <nb-card-body>
@@ -12,6 +12,7 @@
             [liveUpdateChartData]="liveUpdateChartData"
           >
           </ngx-claims-live-update-chart> -->
+          <h3 style="font-size: xx-large;" class="text-center">{{ claimCount }}</h3>
         </nb-card-body>
       </nb-card>
     </div>
@@ -25,17 +26,19 @@
       </nb-card>
     </div>
 
-    <div class="col-4" style="margin-top: -275px">
+    <div class="col-4" style="margin-top: -250px">
       <div>
         <nb-card>
           <nb-card-header>
             <h4>
-              Total number of Providers : <b>{{ providerCount }}</b>
+              Total number of Providers :
             </h4></nb-card-header
           >
           <nb-card-body>
             <!-- <ngx-providers-chart [points]="trafficChartPoints">
             </ngx-providers-chart> -->
+
+            <h3 style="font-size: xx-large;" class="text-center">{{ providerCount }}</h3>
           </nb-card-body>
         </nb-card>
       </div>

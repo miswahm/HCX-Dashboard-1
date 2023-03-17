@@ -16,12 +16,18 @@ export class ClaimsComponent implements OnInit {
 
   categories: any[] = [
     { view: "All", value: "all" },
-    { view: "Pre Auth Request", value: "pre_auth_request" },
-    { view: "Pre Auth Response", value: "pre_auth_response" },
-    { view: "Interim Enhancement Request", value: "interim_enhance_request" },
-    { view: "Interim Enhancement Response", value: "interim_enhance_response" },
-    { view: "Final Enhancement Request", value: "final_enhance_request" },
-    { view: "Final Enhancement Response", value: "final_enhance_response" },
+    { view: "Pre Auth Request", value: "preauth_request" },
+    { view: "Pre Auth Response", value: "preauth_response" },
+    {
+      view: "Interim Enhancement Request",
+      value: "interim_enhancement_request",
+    },
+    {
+      view: "Interim Enhancement Response",
+      value: "interim_enhancement_response",
+    },
+    { view: "Final Enhancement Request", value: "final_enhancement_request" },
+    { view: "Final Enhancement Response", value: "final_enhancement_response" },
     { view: "Query Request", value: "query_request" },
     { view: "Query Response", value: "query_response" },
   ];
@@ -92,6 +98,8 @@ export class ClaimsComponent implements OnInit {
   private endDate;
   private selectedCategory;
 
+  private alive;
+
   constructor(
     protected dateService: NbDateService<Date>,
     private service: SmartTableData,
@@ -156,9 +164,9 @@ export class ClaimsComponent implements OnInit {
     console.log(e);
 
     if (type == "start") {
-      this.selectedStartDate.setValue(e.toJSON().split("T")[0]);
+      this.selectedStartDate.setValue(this.offsetTimeZone(e));
     } else {
-      this.selectedEndDate.setValue(e.toJSON().split("T")[0]);
+      this.selectedEndDate.setValue(this.offsetTimeZone(e));
     }
 
     if (this.selectedStartDate.value && this.selectedEndDate.value) {
@@ -168,5 +176,18 @@ export class ClaimsComponent implements OnInit {
         this.selectedCategory != undefined ? this.selectedCategory : "all"
       );
     }
+  }
+
+
+  offsetTimeZone(date) {
+    let formatedDate = date.toJSON();
+    //offset the date value set by ISO format
+    let temp = new Date(formatedDate);
+    let offset = temp.getTimezoneOffset();
+    let newDateObj = new Date(temp.getTime() - offset * 60 * 1000);
+    //assigning the new offset value to formateDate
+    formatedDate = newDateObj.toJSON().split("T")[0];
+
+    return formatedDate;
   }
 }

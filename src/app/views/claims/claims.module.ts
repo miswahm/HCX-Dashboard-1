@@ -14,8 +14,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 
 //Routes
 const routes: Routes = [
-  { path: "list", component: ClaimsComponent },
-  { path: "", redirectTo: "list", pathMatch: "full" },
+  { path: "", component: ClaimsComponent },
   { path: "**", redirectTo: "list" },
 ];
 

@@ -20,11 +20,11 @@
               <input
                 nbInput
                 placeholder="Pick Date"
-                [nbDatepicker]="selectedStartDate"
-                [formControl]="selectedStartDate"
+                [nbDatepicker]="sDate"
+    
               />
               <nb-datepicker
-                #selectedStartDate
+                #sDate
                 (dateChange)="filterDate($event, 'start')"
               ></nb-datepicker>
             </div>
@@ -32,11 +32,10 @@
               <input
                 nbInput
                 placeholder="Pick Date"
-                [nbDatepicker]="selectedEndDate"
-                [formControl]="selectedEndDate"
+                [nbDatepicker]="eDate"
               />
               <nb-datepicker
-                #selectedEndDate
+                #eDate
                 (dateChange)="filterDate($event, 'end')"
               ></nb-datepicker>
             </div>

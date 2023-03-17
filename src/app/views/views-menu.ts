@@ -10,7 +10,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: "Claims",
     icon: "archive-outline",
-    link: "/views/claims/list",
+    link: "/views/claims",
   },
   {
     title: "Trend Analysis",

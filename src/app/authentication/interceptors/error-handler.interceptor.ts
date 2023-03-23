@@ -66,6 +66,7 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
 
     switch (errorResponse.status) {
       case 401: // Unauthorized
+      localStorage.removeItem("token");
         this.toastrService.show(
           "Session Expired! Please Login again.",
           this.toastrConfig
@@ -76,6 +77,7 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
         });
         break;
       case 403: // Unauthorized
+      localStorage.removeItem("token");
         this.toastrService.show(
           "",
           "Session Expired! Please Login again.",

@@ -5,4 +5,5 @@
  */
 export const environment = {
   production: true,
+  URL: "https://development.vitrayatech.com/api/v1/hcxpayor/nb",
 };
